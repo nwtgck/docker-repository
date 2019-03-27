@@ -4,7 +4,7 @@
 Automated-Build Docker Repository for Security
 
 ## Purpose
-**Guarantee that Docker images are built definitely in cloud**.
+**Guarantee that Docker images are built definitely by a trusted third party**.
 
 Even if someone enable Docker automation-build, the owners can push Docker Hub from their local machine. So, someone bad guy can push malicious images.
 
