@@ -1,20 +1,48 @@
 # Requirements
+# * git
+# * bash
+# * shasum
 # * ghr: https://github.com/tcnksm/ghr
+# * $TRAVIS_JOB_ID
+# * $TRAVIS_COMMIT
 
-# TODO: Hard code
-repo_name="nwtgck/piping-server"
+# Get current commit messsage
+# (NOTE: Don't use Travis variables to reduce dependent)
+commit_message = `git log --format=%B -n 1 HEAD`
+
+match = commit_message.match(%r{#\[(.*?)\]})
+if match.nil?
+  STDERR.puts("[WARN] Repository not found")
+  STDERR.puts("[HELP] You can commit with message like '#[nwtgck-piping-server] Update to 0.9.2'")
+  exit(0)
+end
+
+# Get repo name like 'nwtgck/piping-server'
+repo_name = match[1]
+
 dir_path = File.join("repos", repo_name)
+
+if !File.directory?(dir_path)
+  STDERR.puts("[ERROR] Directory, '#{dir_path}' not found")
+  exit(1)
+end
+
+puts("[INFO] Repository #{repo_name} is building...")
 
 Dir.chdir(dir_path){
   system("pwd")
   system("bash", "-xue", "build.bash")
-  # TODO: Check whether dist exists
+  if !File.directory?("dist")
+    STDERR.puts("[ERROR] '#{File.join(dir_path, "dist")}' directory not found")
+    STDERR.puts("[HELP] You should create 'dist' directory including files to publish")
+    exit(1)
+  end
   files_sha256 = ""
   Dir.chdir("dist"){
     # Calculate SHA256 of files
     files_sha256 = `shasum -a 256 *`
     # Print SHAN256
-    puts("SHA256:")
+    puts("[INFO] SHA256:")
     puts(files_sha256)
     # Save as file in dist
     File.write("FILES_SHA256.txt", files_sha256)
@@ -32,5 +60,5 @@ EOS
   # Publish to GitHub Release
   system("ghr", "-b", release_message, git_tag, "dist")
   # Print a message
-  puts("Released as tag '#{git_tag}'!")
+  puts("[INFO] Released as tag '#{git_tag}'!")
 }
