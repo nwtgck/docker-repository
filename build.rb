@@ -51,6 +51,7 @@ Dir.chdir(dir_path){
   travis_job_url = "https://travis-ci.com/nwtgck/docker-repository/jobs/#{ENV["TRAVIS_JOB_ID"]}"
   # Release message
   release_message = <<EOS
+Commit: #{ENV["TRAVIS_COMMIT"]}
 Travis CI Job: #{travis_job_url}
 SHA256:
 #{files_sha256}
