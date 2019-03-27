@@ -1,4 +1,6 @@
 # docker-repository
+[![Build Status](https://travis-ci.com/nwtgck/docker-repository.svg?branch=master)](https://travis-ci.com/nwtgck/docker-repository)
+
 Automated-Build Docker Repository for Security
 
 ## Purpose
