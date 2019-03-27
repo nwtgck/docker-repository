@@ -2,12 +2,28 @@
 Automated-Build Docker Repository for Security
 
 ## Purpose
-**Guarantee that Docker images are built in cloud definitely**.
+**Guarantee that Docker images are built definitely in cloud**.
 
-When you enable Docker automation-build, the owners can push Docker Hub in their local machine. So, someone bad guy can push malicious images.
+Even if someone enable Docker automation-build, the owners can push Docker Hub from their local machine. So, someone bad guy can push malicious images.
 
 This repository guarantees the images are completely built in Travis CI, and the image tar files are published to GitHub Releases.
 For proof of integrity, SHA256 of tar files are calculated.
+
+You can **verify SHA256 in Travis CI output and downloaded files**. This ensures that your files should be built on Travis CI, and the build formula, Dockerfile and build script, "build.bash" are public without malicious code on GitHub.
+
+## How to get Docker image
+
+Here is an example to load Docker image.
+
+```bash
+# Download
+wget https://github.com/nwtgck/docker-repository/releases/....../myimage.tar
+# Load
+docker load < myimage.tar
+```
+
+Then, `docker images` should output loaded image.  
+You can calculate SHA256 by `shasum -a myimage.tar`.
 
 ## Structure
 
