@@ -41,9 +41,11 @@ Dir.chdir(dir_path){
   Dir.chdir("dist"){
     # Calculate SHA256 of files
     files_sha256 = `shasum -a 256 *`
+    sha_bar = "================= SHA256 (#{repo_name}) ================="
+    puts(sha_bar)
     # Print SHAN256
-    puts("[INFO] SHA256:")
     puts(files_sha256)
+    puts("=" * sha_bar.size)
     # Save as file in dist
     File.write("FILES_SHA256.txt", files_sha256)
   }
