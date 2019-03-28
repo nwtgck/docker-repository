@@ -13,6 +13,11 @@ For proof of integrity, SHA256 of tar files are calculated.
 
 You can **verify SHA256 in Travis CI output and downloaded files**. This ensures that your files should be built on Travis CI, and the build formula, Dockerfile and build script, "build.bash" are public without malicious code on GitHub.
 
+## Example Release
+
+Here is an [example release].  
+You can verify SHA256 on [the Travis job corresponding to the release](https://travis-ci.com/nwtgck/docker-repository/jobs/188383303) and ones of your downloaded files.
+
 ## How to get Docker image
 
 Here is an example to load Docker image.
@@ -53,4 +58,7 @@ repos/
 
 Special commit message triggers Docker build.  
 For example, commit message, `"#[nwtgck/piping-server] Bump up to 0.9.2"` triggers `bash repos/nwtgck/piping-server/build.bash`.  
-After build in Travis CI, the image will be available in GitHub Releases like [nwtgck/piping-server/616e72cde44824f9b0dc24501bc26f70f8266ce8](https://github.com/nwtgck/docker-repository/releases/tag/nwtgck%2Fpiping-server%2F616e72cde44824f9b0dc24501bc26f70f8266ce8).
+After build in Travis CI, the image will be available in GitHub Releases like an [example release].  
+The format is like `#[myimage_name]`. `repos/myname` should exists in this repo. The commit message should contain one `#[myimage_name]` because too much image build consume a lot of time.
+
+[example release]: https://github.com/nwtgck/docker-repository/releases/tag/image%2Fnwtgck%2Fpiping-server%2F2019-03-28-0511-20
