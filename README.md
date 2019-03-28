@@ -61,4 +61,4 @@ For example, commit message, `"#[nwtgck/piping-server] Bump up to 0.9.2"` trigge
 After build in Travis CI, the image will be available in GitHub Releases like an [example release].  
 The format is like `#[myimage_name]`. `repos/myname` should exists in this repo. The commit message should contain one `#[myimage_name]` because too much image build consume a lot of time.
 
-[example release]: https://github.com/nwtgck/docker-repository/releases/tag/image%2Fnwtgck%2Fpiping-server%2F2019-03-28-0511-20
+[example release]: https://github.com/nwtgck/docker-repository/releases/tag/image%2Fnwtgck%2Fpiping-server%2F2019-03-28T05-53-02Z
