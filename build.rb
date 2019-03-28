@@ -54,7 +54,7 @@ Dir.chdir(dir_path){
   # Travis Job URL
   travis_job_url = "https://travis-ci.com/nwtgck/docker-repository/jobs/#{ENV["TRAVIS_JOB_ID"]}"
   # Create a tag
-  git_tag = "#{repo_name}/#{ENV["TRAVIS_COMMIT"]}"
+  git_tag = "#{repo_name}/#{Time.now.utc.strftime('%Y-%m-%d-%H%M-%S')}"
   # Release base URL
   release_base_url = "https://github.com/nwtgck/docker-repository/releases/download/#{URI.encode_www_form_component(git_tag)}"
   # Get tar file names, not path
