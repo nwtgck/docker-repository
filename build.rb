@@ -6,6 +6,8 @@
 # * $TRAVIS_JOB_ID
 # * $TRAVIS_COMMIT
 
+require 'uri'
+
 # Get current commit messsage
 # (NOTE: Don't use Travis variables to reduce dependent)
 commit_message = `git log --format=%B -n 1 HEAD`
@@ -51,17 +53,45 @@ Dir.chdir(dir_path){
   }
   # Travis Job URL
   travis_job_url = "https://travis-ci.com/nwtgck/docker-repository/jobs/#{ENV["TRAVIS_JOB_ID"]}"
-  # Release message
-  release_message = <<EOS
-Commit: #{ENV["TRAVIS_COMMIT"]}
-Travis CI Job: #{travis_job_url}
-SHA256:
-#{files_sha256}
-EOS
   # Create a tag
   git_tag = "#{repo_name}/#{ENV["TRAVIS_COMMIT"]}"
+  # Release base URL
+  release_base_url = "https://github.com/nwtgck/docker-repository/releases/download/#{URI.encode_www_form_component(git_tag)}"
+  # Get tar file names, not path
+  tar_file_names = Dir.chdir("dist"){
+    Dir.glob("*.tar")
+  }
+  # Release message
+  release_message = <<EOS
+### Commit
+#{ENV["TRAVIS_COMMIT"]}
+
+### Travis CI Job
+#{travis_job_url}
+
+### SHA256
+```txt
+#{files_sha256}```
+
+### Verification
+
+You can go to [the job URL](#{travis_job_url}) above to get SHA256 on Travis CI. Verify the hashes and the hashes of your downloaded files.
+The hashes must be the same as ones on this message, but the hashes on CI is more trustable.
+
+#### Commands
+#{tar_file_names.map{|fname| "`wget #{release_base_url}/#{fname}`"}.join("\n")}
+
+#{tar_file_names.map{|fname| "`shasum -a 256 #{fname}`"}.join("\n")}
+
+#{tar_file_names.map{|fname| "`docker load < #{fname}`"}.join("\n")}
+EOS
   # Publish to GitHub Release
   system("ghr", "-b", release_message, git_tag, "dist")
   # Print a message
   puts("[INFO] Released as tag '#{git_tag}'!")
+  # Print release message
+  release_message_bar = "================= Release Message ================="
+  puts(release_message_bar)
+  puts(release_message)
+  puts("=" * release_message_bar.size)
 }
